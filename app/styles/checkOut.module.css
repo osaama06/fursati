@@ -1,0 +1,64 @@
+/* myOrders.module.css */
+
+/* الكلاس المحلي للعنوان */
+.productTitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #333;
+    margin: 15px 0;
+    font-weight: 600;
+  }
+
+  /* باقي الكلاسات */
+  .orders {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .pagetitle {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+   .categorey {
+    display: block;
+    font-size: 1.1rem;
+    color: #888;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+
+  .ordercard {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .ordercard:hover {
+    transform: translateY(-5px);
+  }
+
+  /* أزرار الزيادة والنقصان */
+  .qt button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #f58f7c;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .qt button:hover {
+    background-color: #f2c4ce;
+  }

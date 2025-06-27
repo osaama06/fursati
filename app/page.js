@@ -1,26 +1,60 @@
-// app/page.js
-import BannerSlider from "./bannerslider/page";
-import ProductSlider from "./productsSlider/page";
+import BannerSlider from "./components/bannerslider/page";
 import ProductsPage from "./products/page";
+import ProductSlider from "./components/ProductSlider/page";
+import StoriesSlider from "./components/storiesSlider/page";
 
-// async function fetchProducts() {
-//   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3002'; // حسب البورت اللي فتحه Next.js
-//   const res = await fetch(`${baseUrl}/api/products`, { cache: 'no-store' });
+// 🧠 دالة تجيب التصنيفات من WooCommerce
+async function getCategories() {
+  const auth = Buffer.from(`${process.env.WOO_CONSUMER_KEY}:${process.env.WOO_SECRET_KEY}`).toString("base64");
 
-//   if (!res.ok) {
-//     throw new Error('فشل في جلب المنتجات');
-//   }
+  const res = await fetch("https://furssati.io/wp-json/wc/v3/products/categories", {
+    headers: { Authorization: `Basic ${auth}` },
+  });
 
-//   return await res.json();
-// }
+  const data = await res.json();
+  return data.filter((cat) => cat.count > 0); // فقط التصنيفات اللي فيها منتجات
+}
+
+// 🧠 دالة تجيب المنتجات داخل تصنيف
+async function getProductsByCategoryId(id) {
+  const auth = Buffer.from(`${process.env.WOO_CONSUMER_KEY}:${process.env.WOO_SECRET_KEY}`).toString("base64");
+
+  const res = await fetch(`https://furssati.io/wp-json/wc/v3/products?category=${id}`, {
+    headers: { Authorization: `Basic ${auth}` },
+    cache: "no-store",
+  });
+
+  return await res.json();
+}
 
 export default async function Home() {
-  // const products = await fetchProducts(); // جلب المنتجات مباشرة من الـ API
+  const categories = await getCategories();
+
+  const sliders = await Promise.all(
+    categories.map(async (category) => {
+      const products = await getProductsByCategoryId(category.id);
+      return { category, products };
+    })
+  );
 
   return (
     <main>
+      {/* <ToggleMenu/> */}
       <BannerSlider />
-      <ProductsPage  />
+      <StoriesSlider />
+
+      {/* سلايدر لكل تصنيف */}
+      {sliders.map(({ category, products }) =>
+        products.length > 0 ? (
+          <ProductSlider
+            key={category.id}
+            category={category}
+            products={products}
+          />
+        ) : null
+      )}
+
+      {/* <ProductsPage /> */}
     </main>
   );
 }

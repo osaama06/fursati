@@ -1,19 +1,33 @@
+// /** @type {import('next').NextConfig} */
+// // next.config.js
+
+
+// const nextConfig = {
+
+
+
+// images: {
+//   domains: ["https://furssati.io", "img.freepik.com"],
+// },
+
+
+
+// };
+
+// export default nextConfig;
+
+
 /** @type {import('next').NextConfig} */
-// next.config.js
-
-
 const nextConfig = {
-
-
-
-    images: {
-        domains: ["orq.mzi.mybluehost.me"], // تأكد من إضافة النطاق الصحيح
-      },
-
-
+  images: {
+    domains: [
+      'furssati.io',
+      'img.freepik.com',
+      'img.freepik.com', // تكرار احتياطي
+    ],
+  },
 };
 
-export default nextConfig;
-
+module.exports = nextConfig;
 
 

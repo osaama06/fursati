@@ -7,12 +7,14 @@
 }
 
 body{
-  background-color: #8fadce;
+  text-decoration: none;
+  /* background-color: #8fadce; */
+      background: white;
   color: rgb(138, 21, 21);
   max-width: "1200px";
 
 }
- header{
+ /* header{
 
   background-color: #0056b3;
   padding: 5px;
@@ -33,18 +35,6 @@ body{
  }
 
 
-/* .productwrpper{
-
-  width: 1000px;
-  display: flex;
-  height: 100vh;
-}
-
-.productwrpper div{
-  height: 400px;
-  width: 300px;
-  background-color: seashell;
-} */
 .product-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -72,7 +62,7 @@ body{
 
 .add-to-cart:hover {
   background-color: #0056b3;
-}
+} */
 
 /*
 .product-card {

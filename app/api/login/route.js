@@ -7,7 +7,7 @@ export async function POST(request) {
   const { username, password } = await request.json()
 
   try {
-    const wpRes = await fetch('https://orq.mzi.mybluehost.me/website_e6a5b6e4/wp-json/jwt-auth/v1/token', {
+    const wpRes = await fetch('https://furssati.io/wp-json/jwt-auth/v1/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })

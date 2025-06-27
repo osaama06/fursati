@@ -1,28 +1,29 @@
 'use client';
+import { useRouter } from 'next/navigation';
 
 export default function LogoutButton() {
-  const handleLogout = () => {
-    document.cookie = 'token=; path=/; max-age=0';
-    window.location.href = '/login';
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const res = await fetch('/api/logout', { method: 'POST' });
+
+    if (res.ok) {
+      router.push('/login'); // توجيه بعد تسجيل الخروج
+    } else {
+      alert('فشل تسجيل الخروج');
+    }
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      style={{
-        marginTop: '1rem',
-        padding: '12px 24px',
-        backgroundColor: '#f44336',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '8px',
-        fontSize: '1rem',
-        cursor: 'pointer',
-        transition: 'background-color 0.2s ease-in-out'
-      }}
-      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#d32f2f'}
-      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f44336'}
-    >
+    <button onClick={handleLogout} style={{
+      backgroundColor: '#e74c3c',
+      color: '#fff',
+      padding: '10px 20px',
+      border: 'none',
+      borderRadius: '6px',
+      cursor: 'pointer',
+      fontSize: '1rem',
+    }}>
       تسجيل الخروج
     </button>
   );

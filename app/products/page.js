@@ -1,66 +1,10 @@
-// import Image from "next/image";
-// import ProductCard from "../productCard/page";
-
-
-
-// async function getProduct(slug) {
-//   const consumerKey = process.env.WOO_CONSUMER_KEY;
-//   const secretKey = process.env.WOO_SECRET_KEY;
-//   const auth = Buffer.from(`${consumerKey}:${secretKey}`).toString("base64");
-
-//   const res = await fetch(
-//     `https://orq.mzi.mybluehost.me/website_0b57e4c7/wp-json/wc/v3/products?slug=${slug}`,
-//     {
-//       headers: {
-//         Authorization: `Basic ${auth}`,
-//       },
-//       cache: "no-store", // تحديث البيانات دائمًا عند الطلب
-//     }
-//   );
-
-//   const products = await res.json();
-//   return products.length > 0 ? products[0] : null;
-// }
-
-// export default async function ProductPage({ params }) {
-//   const product = await getProduct(params.slug);
-
-//   if (!product) {
-//     return <p>❌ المنتج غير موجود</p>;
-//   }
-
-//   return (
-//     <>
-//     {}
-
-//     </>
-
-//     // <div className="product-page">
-//     //   <h1>{product.name}</h1>
-//     //   {product.images?.length > 0 && (
-//     //     <Image
-//     //       src={product.images[0].src}
-//     //       alt={product.name}
-//     //       width={500}
-//     //       height={500}
-//     //     />
-//     //   )}
-//     //   <p>السعر: {product.price} {product.currency}</p>
-//     //   <p dangerouslySetInnerHTML={{ __html: product.description }}></p>
-//     // </div>
-
-
-
-//   );
-// }
-
-
-
+import Link from "next/link";
+import ProductCard from "../productCard/page";
 async function getProducts() {
   try {
   const consumerKey = process.env.WOO_CONSUMER_KEY;
   const secretKey = process.env.WOO_SECRET_KEY;
-  const url = `https://orq.mzi.mybluehost.me/website_e6a5b6e4/wp-json/wc/v3/products?status=publish&per_page=100`;
+  const url = `https://furssati.io/wp-json/wc/v3/products?status=publish&per_page=100`;
   const auth = Buffer.from(`${consumerKey}:${secretKey}`).toString("base64");
 
   const res = await fetch(url,
@@ -86,8 +30,7 @@ async function getProducts() {
 
 
 
-import Link from "next/link";
-import ProductCard from "../productCard/page";
+
 
 export default async function ProductsPage() {
   const products = await getProducts();
@@ -96,7 +39,7 @@ export default async function ProductsPage() {
     return <p>⚠ لا توجد منتجات متاحة حاليًا.</p>;
   }
 
-  // console.log("🚀 المنتجات:", products);
+  console.log("🚀 المنتجات:", products);
 
 
   return (
@@ -112,8 +55,6 @@ export default async function ProductsPage() {
           // تم تمرير كل منتج كمكون إلى ProductCard
           <ProductCard key={product.id} product={product} />
         ))}
-
-
       </div>
     </div>
   );

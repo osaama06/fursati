@@ -1,11 +1,10 @@
 
 import { CartProvider } from "./context/CartContext";
 import { Geist, Geist_Mono, Imprima } from "next/font/google";
-import Header from "./header/page";
+import Header from "./components/header/page";
 import "./globals.css";
-import Footer from "./footer/page";
-import Navbar from "./navBar/page";
-import SearchBar from "./searchbar/page";
+import Footer from "./components/footer/page";
+import Navbar from "./components/navBar/page";
 import { cookies } from 'next/headers'
 import { verifyJwt } from "@/lib/jwt";
 
@@ -45,10 +44,10 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
 
         <CartProvider>
-        <Header /> {/* تأكد أن الهيدر موجود */}
-        <Navbar />
-        <main>{children}</main> {/* يجب وضع children هنا لعرض محتوى الصفحات */}
-        <Footer />
+          <Header />
+          <Navbar />
+          <main>{children}</main> 
+          <Footer />
 
         </CartProvider>
       </body>

@@ -9,7 +9,7 @@ async function getProductBySlug(slug) {
   const auth = Buffer.from(`${consumerKey}:${secretKey}`).toString("base64");
 
   const res = await fetch(
-    `https://orq.mzi.mybluehost.me/website_e6a5b6e4/wp-json/wc/v3/products?slug=${slug}`,
+    `https://furssati.io/wp-json/wc/v3/products?slug=${slug}`,
     {
       headers: {
         Authorization: `Basic ${auth}`,

@@ -1,5 +1,8 @@
 // app/category/[slug]/page.js
 import ProductCard from "@/app/productCard/page";
+import "@/styles/products-grid.css";
+
+
 async function getCategoryBySlug(slug) {
     const auth = Buffer.from(`${process.env.WOO_CONSUMER_KEY}:${process.env.WOO_SECRET_KEY}`).toString("base64");
 
@@ -36,32 +39,22 @@ async function getCategoryBySlug(slug) {
     const products = await getProductsByCategoryId(category.id);
 
     return (
-<main style={{ padding: '2rem' }}>
-  <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-    <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>
-      منتجات {category.name}
-    </h1>
+<main className="products-page">
+  <h1>منتجات {category.name}</h1>
 
-    {products.length === 0 ? (
-      <p style={{ textAlign: 'center' }}>لا توجد منتجات</p>
-    ) : (
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '1.5rem',
-          // justifyContent: 'center', // يخليهم متجمعين في الوسط
-        }}
-      >
-        {products.map((product) => (
-          <div style={{ flex: '0 0 250px' }} key={product.id}>
-            <ProductCard product={product} />
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
+  {products.length === 0 ? (
+    <p className="no-products">لا توجد منتجات</p>
+  ) : (
+    <div className="products-grid">
+      {products.map((product) => (
+        <div className="product-wrapper" key={product.id}>
+          <ProductCard product={product} />
+        </div>
+      ))}
+    </div>
+  )}
 </main>
+
 
     );
   }

@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import Image from 'next/image';
 import Link from 'next/link';
 import '@/styles/account.css';
-// import LogoutButton from '../../components/logoutbutton/page';
 import { redirect } from 'next/navigation';
 
 const secret = process.env.JWT_SECRET;
@@ -50,7 +49,6 @@ export default async function AccountPage() {
         <p>لا توجد طلبات حالياً</p>
       </section>
 
-      // <LogoutButton />
     </main>
   );
 }

@@ -48,9 +48,9 @@ const Cart = () => {
               </span>
 
               <div onClick={() => removeFromCart(item.id)} className={styles.remvedProduct}>
-                <span>إزالة</span>
+
                 <button onClick={() => removeFromCart(item.id)} title="حذف المنتج">
-                  🗑️
+                  X
                 </button>
               </div>
 

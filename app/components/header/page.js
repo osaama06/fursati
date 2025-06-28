@@ -101,7 +101,7 @@ export default function Header() {
         <form className="search-bar" onSubmit={handleSearch}>
           <input
             className="search-input"
-            placeholder="على ايش تدور؟"
+            placeholder="بحث؟"
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

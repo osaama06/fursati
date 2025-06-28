@@ -2,6 +2,8 @@
 
 import { searchProducts } from '@/lib/api';
 import ProductCard from '../productCard/page';
+import "@/styles/products-grid.css";
+
 
 export default async function SearchPage({ searchParams }) {
   const query = searchParams.q || '';

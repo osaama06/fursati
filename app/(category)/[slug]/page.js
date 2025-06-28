@@ -40,7 +40,7 @@ async function getCategoryBySlug(slug) {
 
     return (
 <main className="products-page">
-  <h1>منتجات {category.name}</h1>
+  <h1> {category.name}</h1>
 
   {products.length === 0 ? (
     <p className="no-products">لا توجد منتجات</p>

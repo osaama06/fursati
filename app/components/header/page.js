@@ -119,7 +119,7 @@ export default function Header() {
           <div className="side-menu-content">
       <ul >
         {categories.map((cat) => (
-          <li key={cat.id} >
+          <li key={cat.id}  onClick={() => setMenuOpen(false)}>
             <Link href={`${cat.slug}`} >{cat.name}</Link>
           </li>
         ))}

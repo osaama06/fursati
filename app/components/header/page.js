@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from 'next/image';
 import { FiShoppingCart } from "react-icons/fi";
 import { IoIosSearch } from "react-icons/io";
 import { MdPerson } from "react-icons/md";
@@ -64,7 +65,7 @@ export default function Header() {
             <IoMenuSharp />
           </div>
           <Link href="/">
-            <img src="/fursati-logo.png" alt="Logo" className="logo-img" />
+            <Image src="/fursati-logo.png" alt="Logo" className="logo-img" />
           </Link>
         </div>
 

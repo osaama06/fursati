@@ -5,12 +5,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { FiShoppingCart } from 'react-icons/fi';
 import { FaStar } from 'react-icons/fa';
-import { useCart } from '../context/CartContext'; // تأكد من المسار الصحيح
+import { useCart } from '../context/CartContext';
 import '@/styles/ProductCard.css';
 
 export default function ProductCard({ product }) {
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
+
+  if (!product) {
+    return <div>لا توجد بيانات للمنتج</div>;
+  }
 
   const handleAdd = () => {
     addToCart(product);

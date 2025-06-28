@@ -65,7 +65,14 @@ export default function Header() {
             <IoMenuSharp />
           </div>
           <Link href="/">
-            <Image src="/fursati-logo.png" alt="Logo" className="logo-img" />
+              <Image
+              src="/fursati-logo.png"
+              alt="Logo"
+              width={120}
+              height={40}
+              className="logo-img"
+              priority
+            />
           </Link>
         </div>
 

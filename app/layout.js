@@ -10,6 +10,7 @@ import { verifyJwt } from "@/lib/jwt";
 
 
 
+
 export async function GET() {
   const token = cookies().get('token')?.value
 
@@ -46,7 +47,7 @@ export default function RootLayout({ children }) {
         <CartProvider>
           <Header />
           <Navbar />
-          <main>{children}</main> 
+          <main>{children}</main>
           <Footer />
 
         </CartProvider>

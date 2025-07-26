@@ -2,6 +2,8 @@
 
 import { searchProducts } from '@/lib/api';
 import ProductCard from '../productCard/page';
+import "@/styles/products-grid.css";
+
 
 export default async function SearchPage({ searchParams }) {
   const query = searchParams.q || '';
@@ -13,11 +15,14 @@ export default async function SearchPage({ searchParams }) {
       {products.length === 0 ? (
         <p>لا توجد منتجات مطابقة.</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+<div className="products-grid">
+  {products.map((product) => (
+    <div className="product-item" key={product.id}>
+      <ProductCard product={product} />
+    </div>
+  ))}
+</div>
+
       )}
     </div>
   );

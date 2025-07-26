@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
+import woocommerceApi from '@/lib/woocommerce'
 
 const secret = process.env.JWT_SECRET || '@#Yt5$Dsdg6@!#dfghASD987'
 
@@ -16,13 +17,28 @@ export async function POST(request) {
     const data = await wpRes.json()
 
     if (data.token) {
-      // ✨ أنشئ توكن خاص بنا يحتوي على معلومات المستخدم
+      // 🔍 نحصل على customer_id من WooCommerce
+      let customerId = null
+      try {
+        const customerRes = await woocommerceApi.get('customers', {
+          search: data.user_email
+        })
+
+        if (customerRes.data && customerRes.data.length > 0) {
+          customerId = customerRes.data[0].id
+        }
+      } catch (err) {
+        console.warn('⚠️ لم يتم العثور على العميل في WooCommerce:', err.message)
+      }
+
+      // 🛡️ إنشاء توكن خاص يحتوي على customer_id
       const customToken = jwt.sign(
         {
           email: data.user_email,
           name: data.user_display_name,
           username: data.user_nicename,
-          wpToken: data.token // لو تبغى تستخدم توكن ووكومرس لاحقًا
+          wpToken: data.token,
+          customer_id: customerId || null
         },
         secret,
         { expiresIn: '1d' }

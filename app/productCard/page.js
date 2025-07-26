@@ -4,16 +4,43 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FiShoppingCart } from 'react-icons/fi';
-import { FaStar } from 'react-icons/fa';
-import { useCart } from '../context/CartContext'; // تأكد من المسار الصحيح
+import { useCart } from '../context/CartContext';
 import '@/styles/ProductCard.css';
 
 export default function ProductCard({ product }) {
   const [added, setAdded] = useState(false);
+  const [selectedSize, setSelectedSize] = useState('');
   const { addToCart } = useCart();
 
+  if (!product) {
+    return <div>لا توجد بيانات للمنتج</div>;
+  }
+
+  // 🔍 فحص وجود المقاسات
+  const hasSizes = product.attributes?.some(attr =>
+    attr.name === 'المقاس' || attr.name.toLowerCase().includes("size")
+  );
+
+  const sizes = hasSizes
+    ? product.attributes.find(attr =>
+        attr.name === 'المقاس' || attr.name.toLowerCase().includes("size")
+      )?.options || []
+    : [];
+
   const handleAdd = () => {
-    addToCart(product);
+    if (hasSizes && !selectedSize) {
+      alert("⚠️ يرجى اختيار المقاس أولاً");
+      return;
+    }
+
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0]?.src,
+      size: hasSizes ? selectedSize : null,
+    });
+
     setAdded(true);
   };
 
@@ -28,12 +55,19 @@ export default function ProductCard({ product }) {
         />
         <h3 className="product-name">{product.name}</h3>
 
-        <div className="rating">
-          {[...Array(4)].map((_, i) => (
-            <FaStar key={i} color="#ffa41c" size={16} />
-          ))}
-          <span className="review-count">(20)</span>
-        </div>
+        {/* 🟨 مكان التقييمات - استبدلناه بالمقاسات */}
+        {hasSizes && (
+          <select
+            className="size-select"
+            value={selectedSize}
+            onChange={(e) => setSelectedSize(e.target.value)}
+          >
+            <option value="">اختر المقاس</option>
+            {sizes.map((size, index) => (
+              <option key={index} value={size}>{size}</option>
+            ))}
+          </select>
+        )}
 
         <p className="price">{product.price} {product.currency || "ر.س"}</p>
         <p className="shipping">✔ توصيل مجاني</p>

@@ -8,11 +8,14 @@
   position: sticky;
   top: 0;
   z-index: 999;
-  transition: transform 0.3s ease-in-out;
+  transform: translateY(0);
+  transition: transform 0.5s ease-in-out;
 }
-.header--hidden {
+
+/* .header--hidden {
   transform: translateY(-100%);
-}
+} */
+
 
 .wrapper {
   max-width: 1200px;
@@ -162,7 +165,7 @@
   right: 0;
   width: 280px;
   height: 100vh;
-  background-color: #1c1c1c;
+  background-color: #251f35;
   z-index: 9999;
   padding: 2rem 1.5rem;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.4);

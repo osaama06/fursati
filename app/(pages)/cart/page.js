@@ -23,7 +23,7 @@ const Cart = () => {
 
   return (
     <div className={styles.orders}>
-      <h1 className={styles.pagetitle}>Cart</h1>
+      <h1 className={styles.pagetitle}>السلة</h1>
       <br />
 
       {cartItems.length === 0 ? (
@@ -48,9 +48,8 @@ const Cart = () => {
               </span>
 
               <div onClick={() => removeFromCart(item.id)} className={styles.remvedProduct}>
-                <span>إزالة</span>
                 <button onClick={() => removeFromCart(item.id)} title="حذف المنتج">
-                  🗑️
+                  X
                 </button>
               </div>
 

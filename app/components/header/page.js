@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from 'next/image';
 import { FiShoppingCart } from "react-icons/fi";
 import { IoIosSearch } from "react-icons/io";
 import { MdPerson } from "react-icons/md";
@@ -18,17 +19,37 @@ export default function Header() {
   const [showHeader, setShowHeader] = useState(true);
   const router = useRouter();
 
+  // 🟡 تحسين منطق إخفاء الهيدر
   useEffect(() => {
     let lastScrollY = window.scrollY;
+    let timeoutId = null;
+
     const handleScroll = () => {
-      setShowHeader(window.scrollY < lastScrollY);
-      lastScrollY = window.scrollY;
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY;
+
+      if (delta < -20) {
+        // المستخدم طالع → أظهر الهيدر على طول
+        setShowHeader(true);
+        if (timeoutId) clearTimeout(timeoutId);
+      } else if (delta > 40) {
+        // المستخدم نازل كثير → أخفي الهيدر بعد تأخير بسيط
+        if (!timeoutId) {
+          timeoutId = setTimeout(() => {
+            setShowHeader(false);
+            timeoutId = null;
+          }, 150);
+        }
+      }
+
+      lastScrollY = currentScrollY;
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // منع التمرير عند فتح القائمة
+  // 🔒 منع التمرير عند فتح القائمة
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
   }, [menuOpen]);
@@ -40,10 +61,7 @@ export default function Header() {
     }
   };
 
-  // categories
-
-    const [categories, setCategories] = useState([]);
-
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     async function fetchCategories() {
       const res = await fetch("/api/categories");
@@ -51,10 +69,8 @@ export default function Header() {
       const filtered = data.filter(cat => cat.count > 0);
       setCategories(filtered);
     }
-
     fetchCategories();
   }, []);
-
 
   return (
     <header className={`header ${!showHeader ? 'header--hidden' : ''}`}>
@@ -64,7 +80,14 @@ export default function Header() {
             <IoMenuSharp />
           </div>
           <Link href="/">
-            <img src="/fursati-logo.png" alt="Logo" className="logo-img" />
+            <Image
+              src="/fursati-logo.png"
+              alt="Logo"
+              width={120}
+              height={40}
+              className="logo-img"
+              priority
+            />
           </Link>
         </div>
 
@@ -104,24 +127,18 @@ export default function Header() {
         </form>
       </div>
 
-      {/* ✅ القائمة الجانبية الثابتة */}
       {menuOpen && (
         <div className="side-menu">
           <button className="close-btn" onClick={() => setMenuOpen(false)}>×</button>
           <div className="side-menu-content">
-      <ul >
-        {categories.map((cat) => (
-          <li key={cat.id} >
-            <Link href={`${cat.slug}`} >{cat.name}</Link>
-          </li>
-        ))}
-      </ul>
+            <ul>
+              {categories.map((cat) => (
+                <li key={cat.id} onClick={() => setMenuOpen(false)}>
+                  <Link href={`/${cat.slug}`}>{cat.name}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
-
-
-
-
-
         </div>
       )}
     </header>

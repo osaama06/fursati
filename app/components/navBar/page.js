@@ -24,7 +24,7 @@ export default function Navbar() {
       <ul style={styles.navList}>
         {categories.map((cat) => (
           <li key={cat.id} style={styles.navItem}>
-            <Link href={`${cat.slug}`} style={styles.navLink}>{cat.name}</Link>
+            <Link href={`/${cat.slug}`} style={styles.navLink}>{cat.name}</Link>
           </li>
 
 
@@ -44,6 +44,7 @@ const styles = {
         alignItems :'center',
         height:'2.5rem'
     },
+
     navList: {
         overflow: 'auto',
         scrollbarWidth: 'none',

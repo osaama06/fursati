@@ -1,6 +1,10 @@
 'use client';
 
 export default function OrderCard({ order }) {
+  if (!order) {
+    return <div>لا توجد بيانات للطلب</div>; // رسالة بديلة لو لم تتوفر بيانات الطلب
+  }
+
   const statusMap = {
     pending: 'قيد الانتظار',
     processing: 'قيد التجهيز',
@@ -21,7 +25,7 @@ export default function OrderCard({ order }) {
     on_hold: '#f7a35c',
   };
 
-  const status = order.status;
+  const status = order.status || 'unknown';
   const statusLabel = statusMap[status] || status;
   const statusColor = statusColors[status] || '#999';
 
@@ -33,7 +37,7 @@ export default function OrderCard({ order }) {
       marginBottom: '1.5rem',
       background: '#f9f9f9',
     }}>
-      <h3 style={{ margin: 0 }}>طلب #{order.id}</h3>
+      <h3 style={{ margin: 0 }}>طلب #{order.id || 'غير معروف'}</h3>
       <p style={{ margin: '5px 0' }}>
         <span style={{
           backgroundColor: statusColor,
@@ -45,11 +49,11 @@ export default function OrderCard({ order }) {
           {statusLabel}
         </span>
       </p>
-      <p>الإجمالي: {order.total} ر.س</p>
-<p>تاريخ الطلب: {new Date(order.date_created).toISOString().split('T')[0]}</p>
+      <p>الإجمالي: {order.total || 'غير معروف'} ر.س</p>
+      <p>تاريخ الطلب: {order.date_created ? new Date(order.date_created).toISOString().split('T')[0] : 'غير معروف'}</p>
 
       <ul style={{ paddingRight: '1rem' }}>
-        {order.line_items.map(item => (
+        {(order.line_items || []).map(item => (
           <li key={item.id}>
             {item.name} × {item.quantity}
           </li>

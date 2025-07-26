@@ -1,87 +1,102 @@
 'use client';
 
 import { useCart } from '../../context/CartContext';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // ✅ استخدم useRouter
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import styles from '@/styles/checkOut.module.css';
 
 export default function CheckoutPage() {
   const { cartItems, clearCart } = useCart();
-  const router = useRouter(); // ✅ التوجيه
+  const router = useRouter();
 
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
     address: '',
     city: '',
     state: '',
     postcode: '',
     country: 'SA',
-    email: '',
-    phone: '',
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleOrder = async () => {
-    setLoading(true);
+  setLoading(true);
 
+  try {
     const response = await fetch('/api/create-order', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...form,
-        cartItems,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...form, cartItems }),
     });
 
-    const data = await response.json();
+    let data = {};
+    try {
+      data = await response.json();
+    } catch (jsonError) {
+      throw new Error("الرد من السيرفر ليس JSON صالح");
+    }
+
     setLoading(false);
 
     if (response.ok) {
       clearCart();
-      router.push('/thank-you'); // ✅ توجيه بعد نجاح الطلب
+      router.push('/thank-you');
     } else {
-      alert(data.error || 'فشل في إنشاء الطلب');
+      alert(data?.error || 'فشل في إنشاء الطلب');
     }
-  };
+  } catch (error) {
+    setLoading(false);
+    alert('❌ خطأ أثناء إنشاء الطلب: ' + error.message);
+  }
+};
+
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>الدفع</h1>
+    <div className={styles.checkoutPage}>
+      <h1 className={styles.checkoutHeading}>الدفع</h1>
 
       {cartItems.length === 0 ? (
-        <p>سلتك فارغة</p>
+        <p className={styles.checkoutEmpty}>سلتك فارغة</p>
       ) : (
-        <>
-          <h2>محتويات السلة</h2>
-          {cartItems.map((item) => (
-            <div key={item.id}>
-              <p>{item.name} - الكمية: {item.quantity}</p>
+        <div className={styles.checkoutContent}>
+          <div className={styles.checkoutCart}>
+            <h2>🛒 محتويات السلة</h2>
+            {cartItems.map((item) => (
+              <div key={item.id} className={styles.checkoutCartItem}>
+                <span>{item.name}</span>
+                <span>× {item.quantity}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.checkoutFormSection}>
+            <h2>📦 العنوان</h2>
+            <div className={styles.checkoutFormGrid}>
+              <input name="address" placeholder="العنوان" onChange={handleChange} className={styles.checkoutInput} />
+              <input name="city" placeholder="المدينة" onChange={handleChange} className={styles.checkoutInput} />
+              <input name="state" placeholder="المنطقة" onChange={handleChange} className={styles.checkoutInput} />
+              <input name="postcode" placeholder="الرمز البريدي" onChange={handleChange} className={styles.checkoutInput} />
+              <input name="country" value="SA" readOnly className={styles.checkoutInput} />
             </div>
-          ))}
 
-          <h2 style={{ marginTop: '20px' }}>بيانات العميل</h2>
+            <button
+              onClick={handleOrder}
+              disabled={loading}
+              className={styles.checkoutButton}
+            >
+              {loading ? '⏳ يتم الإرسال...' : '✅ إرسال الطلب'}
+            </button>
 
-          <input name="firstName" placeholder="الاسم الأول" onChange={handleChange} />
-          <input name="lastName" placeholder="اسم العائلة" onChange={handleChange} />
-          <input name="address" placeholder="العنوان" onChange={handleChange} />
-          <input name="city" placeholder="المدينة" onChange={handleChange} />
-          <input name="state" placeholder="المنطقة" onChange={handleChange} />
-          <input name="postcode" placeholder="الرمز البريدي" onChange={handleChange} />
-          <input name="country" value="SA" readOnly />
-          <input name="email" placeholder="البريد الإلكتروني" onChange={handleChange} />
-          <input name="phone" placeholder="رقم الجوال" onChange={handleChange} />
-
-          <button onClick={handleOrder} disabled={loading}>
-            {loading ? 'يتم الإرسال...' : 'إرسال الطلب'}
-          </button>
-        </>
+            {error && (
+              <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

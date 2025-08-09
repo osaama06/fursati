@@ -1,4 +1,4 @@
-import ClientProduct from './ClientProduct';
+import ProductContent from './ProductContent';
 
 async function getProductBySlug(slug) {
   const consumerKey = process.env.WOO_CONSUMER_KEY;
@@ -45,9 +45,9 @@ async function getVariations(productId) {
 export default async function ProductPage({ params }) {
   const product = await getProductBySlug(params.slug);
   if (!product) {
-    return <div style={{ padding: "20px", textAlign: "center" }}>❌ المنتج غير موجود</div>;
+    return <div >❌ المنتج غير موجود</div>;
   }
 
   const variations = await getVariations(product.id);
-  return <ClientProduct product={product} variations={variations} />;
+  return <ProductContent product={product} variations={variations} />;
 }

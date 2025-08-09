@@ -1,9 +1,9 @@
-
 'use client';
 import Image from "next/image";
 import { useState } from "react";
-import { FiShoppingCart} from 'react-icons/fi';
+import { FiShoppingCart } from 'react-icons/fi';
 import { useCart } from '../context/CartContext';
+import { useRouter } from 'next/navigation';
 import '@/styles/ProductCard.css';
 
 export default function DynamicProductCard({ product }) {
@@ -12,6 +12,7 @@ export default function DynamicProductCard({ product }) {
   const [liked, setLiked] = useState(false);
   const [showSizeError, setShowSizeError] = useState(false);
   const { addToCart } = useCart();
+  const router = useRouter();
 
   if (!product) {
     return <div className="no-product">لا توجد بيانات للمنتج</div>;
@@ -46,12 +47,15 @@ export default function DynamicProductCard({ product }) {
   const averageRating = product.average_rating || 0;
   const totalReviews = product.rating_count || 0;
 
-  const handleSizeSelect = (size) => {
+  const handleSizeSelect = (size, e) => {
+    e.stopPropagation(); // منع انتشار الحدث للبطاقة الأساسية
     setSelectedSize(size);
     setShowSizeError(false);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.stopPropagation(); // منع انتشار الحدث للبطاقة الأساسية
+
     if (hasSizes && !selectedSize) {
       setShowSizeError(true);
       return;
@@ -71,13 +75,29 @@ export default function DynamicProductCard({ product }) {
     setTimeout(() => setAdded(false), 3000);
   };
 
-  const handleLike = () => {
+  const handleLike = (e) => {
+    e.stopPropagation(); // منع انتشار الحدث للبطاقة الأساسية
     setLiked(!liked);
     // يمكن إضافة API call هنا لحفظ المفضلة
   };
 
+  const handleCardClick = () => {
+    // الانتقال إلى صفحة المنتج
+    router.push(`/products/${product.slug}`);
+  };
+
   return (
-    <div className="dynamic-product-card">
+    <div
+      className="dynamic-product-card clickable-card"
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleCardClick();
+        }
+      }}
+    >
       {/* شارة الخصم */}
       {discount > 0 && (
         <div className="discount-badge">
@@ -87,8 +107,6 @@ export default function DynamicProductCard({ product }) {
 
       {/* حاوية الصورة */}
       <div className="image-container">
-
-
         {/* الصورة الرئيسية */}
         <div className="image-wrapper">
           <Image
@@ -99,6 +117,7 @@ export default function DynamicProductCard({ product }) {
             className="product-image"
           />
         </div>
+
 
         {/* شارات المميزات */}
         {/* <div className="feature-badges">
@@ -131,7 +150,6 @@ export default function DynamicProductCard({ product }) {
           </div>
           <span className="review-count">({totalReviews})</span>
         </div>
-
 
         {/* الأسعار */}
         <div className="price-section">
@@ -168,7 +186,7 @@ export default function DynamicProductCard({ product }) {
               {sizes.map((size) => (
                 <button
                   key={size}
-                  onClick={() => handleSizeSelect(size)}
+                  onClick={(e) => handleSizeSelect(size, e)}
                   className={`size-circle ${selectedSize === size ? 'selected' : ''}`}
                 >
                   {size}
@@ -180,7 +198,6 @@ export default function DynamicProductCard({ product }) {
             )}
           </div>
         )}
-
 
         {/* زر الإضافة للسلة */}
         <button

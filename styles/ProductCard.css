@@ -460,4 +460,57 @@ background: linear-gradient(135deg, #124d80, #251f35, #251f35);  color: white;
     justify-content: flex-end;
     margin-bottom: 10px;
   }
+}/* إضافات للبطاقة القابلة للنقر */
+.clickable-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.clickable-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.clickable-card:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.clickable-card:active {
+  transform: translateY(-2px);
+}
+
+/* تأثيرات إضافية عند التحويم */
+.clickable-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.clickable-card:hover .glow-effect {
+  opacity: 0.8;
+}
+
+/* تأكد أن الأزرار والعناصر التفاعلية لا تتداخل مع النقر */
+.clickable-card .size-circle,
+.clickable-card .add-to-cart-btn {
+  position: relative;
+  z-index: 10;
+}
+
+/* مؤشر بصري إضافي للنقر */
+.clickable-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.clickable-card:hover::after {
+  opacity: 1;
 }

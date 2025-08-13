@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/swc-win32-x64-msvc": "^15.4.6",
     "@react-icons/all-files": "^4.1.0",
-    "@woocommerce/woocommerce-rest-api": "^1.0.1",
+    "@woocommerce/woocommerce-rest-api": "^1.0.2",
+    "asynckit": "^0.4.0",
     "axios": "^1.9.0",
+    "combined-stream": "^1.0.8",
+    "form-data": "^4.0.4",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",

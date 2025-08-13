@@ -7,7 +7,7 @@ async function getCategoryBySlug(slug) {
     const auth = Buffer.from(`${process.env.WOO_CONSUMER_KEY}:${process.env.WOO_SECRET_KEY}`).toString("base64");
 
     const res = await fetch(
-      "https://furssati.io/wp-json/wc/v3/products/categories",
+      `${process.env.WOO_URL}/wp-json/wc/v3/products/categories`,
       {
         headers: { Authorization: `Basic ${auth}` },
       }
@@ -21,7 +21,7 @@ async function getCategoryBySlug(slug) {
     const auth = Buffer.from(`${process.env.WOO_CONSUMER_KEY}:${process.env.WOO_SECRET_KEY}`).toString("base64");
 
     const res = await fetch(
-      `https://furssati.io/wp-json/wc/v3/products?category=${id}`,
+      `${process.env.WOO_URL}/wp-json/wc/v3/products?category=${id}`,
       {
         headers: { Authorization: `Basic ${auth}` },
         cache: "no-store",
